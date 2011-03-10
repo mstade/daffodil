@@ -29,7 +29,7 @@ package se.stade.daffodil
 		
 		public function get thatAreReadable():PropertyReflection
 		{
-			signatureMatches = function(input:XMLList):Boolean
+			signatureMatches = function(input:XML):Boolean
 			{
 				return input.localName() == "variable" ||
 					input.@access.toString().indexOf("read") >= 0;
