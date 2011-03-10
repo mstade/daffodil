@@ -4,6 +4,11 @@ package se.stade.daffodil
 	
 	internal final class XMLConstantReflection extends XMLAbstractReflection implements ConstantReflection
 	{
+		public function XMLConstantReflection(reflector:XMLReflector)
+		{
+			super(reflector);
+		}
+		
 		public function named(name:String):ConstantReflection
 		{
 			nameMatches = createNameMatcher(name);

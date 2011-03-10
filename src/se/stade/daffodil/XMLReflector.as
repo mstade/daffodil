@@ -1,7 +1,10 @@
 package se.stade.daffodil
 {
+	import flash.utils.getDefinitionByName;
+	
 	import se.stade.daffodil.metadata.Metadata;
-	import se.stade.daffodil.metadata.MetadataProperty;
+	import se.stade.daffodil.metadata.MetadataParameter;
+	import se.stade.daffodil.methods.Constructor;
 	import se.stade.daffodil.methods.Delegate;
 	import se.stade.daffodil.methods.Method;
 	import se.stade.daffodil.methods.MethodReflection;
@@ -11,85 +14,160 @@ package se.stade.daffodil
 	import se.stade.daffodil.properties.ConstantReflection;
 	import se.stade.daffodil.properties.Property;
 	import se.stade.daffodil.properties.PropertyReflection;
+	import se.stade.daffodil.properties.Variable;
+	import se.stade.daffodil.types.QualifiedType;
+	import se.stade.daffodil.types.TypeReflection;
 	
-	internal final class XMLReflector implements Reflector
+	internal final class XMLReflector implements TypeInspector
 	{
-		public function XMLReflector(cache:XMLDescriptionCache, target:Object)
+		public function XMLReflector(cache:XMLDescriptionCache)
 		{
 			this.cache = cache;
-			this.target = target;
 		}
 		
 		protected var cache:XMLDescriptionCache;
-		protected var target:Object;
+		private var targets:Array;
+		
+		public function setTargets(target:Object, additionalTargets:Array):void
+		{
+			if (target is Array)
+				targets = target.concat(additionalTargets);
+			else
+				targets = [target].concat(additionalTargets);
+		}
+		
+		public function getDescription(target:Object):XML
+		{
+			return cache.retrieve(target);
+		}
 		
 		public function find(reflection:Reflection):Array
 		{
-			var elements:XMLList;
-			var parse:Function;
-			
-			if (reflection is MethodReflection)
-			{
-				parse = parseMethod;
-				elements = cache.retrieve(target).method
-			}
-			else if (reflection is PropertyReflection)
-			{
-				parse = parseProperty;
-				
-				var description:XML = cache.retrieve(target);
-				elements = description.accessor + description.variable;
-			}
-			else if (reflection is ConstantReflection)
-			{
-				parse = parseConstant;
-				elements = cache.retrieve(target).constant;
-			}
-			
+			return findWithLimit(reflection, uint.MAX_VALUE);
+		}
+		
+		public function findFirst(reflection:Reflection):Type
+		{
+			return findWithLimit(reflection, 1)[0];
+		}
+		
+		private function findWithLimit(reflection:Reflection, limit:uint):Array
+		{
 			var members:Array = [];
 			
-			for each (var input:XML in elements)
+			for each (var target:Object in targets)
 			{
-				if (reflection.matches(input))
-					members[members.length] = parse(input);
+				var parse:Function;
+				var elements:XMLList;
+				
+				if (reflection is TypeReflection)
+				{
+					parse = parseType;
+					elements = XMLList(cache.retrieve(target));
+				}
+				else if (reflection is MethodReflection)
+				{
+					parse = parseMethod;
+					elements = cache.retrieve(target)..method;
+				}
+				else if (reflection is PropertyReflection)
+				{
+					parse = parseProperty;
+					
+					var description:XML = cache.retrieve(target);
+					elements = description..accessor + description..variable;
+				}
+				else if (reflection is ConstantReflection)
+				{
+					parse = parseConstant;
+					elements = cache.retrieve(target)..constant;
+				}
+				
+				for each (var input:XML in elements)
+				{
+					if (reflection.matches(input))
+						members.push(parse(target, input));
+					
+					if (members.length == limit)
+						return members;
+				}
 			}
 			
 			return members;
 		}
 		
-		private function parseMethod(method:XML):Method
+		private function parseType(target:Object, type:XML):QualifiedType
+		{
+			var name:String = type.@name;
+			var definition:Class = getDefinitionByName(name) as Class;
+			
+			var metadata:Vector.<Metadata> = parseMetadata(type);
+			var parameters:Vector.<Parameter> = parseParameters(type..constructor.parameter);
+			
+			var constructor:Method = new Constructor(definition, parameters, metadata);
+					
+			var extendedTypes:Vector.<String> = parseTypeNames(type..extendsClass);
+			var interfaces:Vector.<String> = parseTypeNames(type..implementsInterface);
+			
+			return new QualifiedType(name, constructor, extendedTypes, interfaces); 
+		}
+		
+		private function parseTypeNames(types:XMLList):Vector.<String>
+		{
+			var typeNames:Vector.<String> = new <String>[];
+			
+			for each (var type:XML in types.@type)
+			{
+				typeNames.push(type);
+			}
+			
+			return typeNames;
+		}
+		
+		private function parseMethod(target:Object, method:XML):Method
 		{
 			var name:String = method.@name;
-			var parameters:Vector.<Parameter> = new <Parameter>[];
+			var metadata:Vector.<Metadata> = parseMetadata(method);
+			var parameters:Vector.<Parameter> = parseParameters(method.parameter);
 			
-			for each (var parameter:XML in method.parameter)
+			return new Delegate(target, name, parameters, method.@returnType, metadata);
+		}
+		
+		private function parseParameters(parameters:XMLList):Vector.<Parameter>
+		{
+			var parameterList:Vector.<Parameter> = new <Parameter>[];
+			
+			for each (var parameter:XML in parameters)
 			{
 				var type:String = parameter.@type;
 				var index:int = int(parameter.@index);
 				var isOptional:Boolean = parameter.@optional == "true";
 				
-				parameters.push(new Parameter(type, index, isOptional));
+				parameterList.push(new Parameter(type, index, isOptional));
 			}
 			
-			var metadata:Vector.<Metadata> = parseMetadata(method);
-			
-			return new Delegate(target, name, parameters, method.@returnType, metadata);
+			return parameterList;
 		}
 		
-		private function parseProperty(input:XML):Property
+		private function parseProperty(target:Object, input:XML):Property
 		{
 			var name:String = input.@name;
 			var type:String = input.@type;
 			
 			var metadata:Vector.<Metadata> = parseMetadata(input);
 			
-			var isReadable:Boolean = input.localName() == "variable" || input.@access.toString().indexOf("read") >= 0;
-			var isWritable:Boolean = input.localName() == "variable" || input.@access.toString().indexOf("write") >= 0;
-			
-			return new Accessor(target, name, type, isReadable, isWritable, metadata);
+			if (input.localName() == "variable")
+				return new Variable(target, name, type, metadata);
+			else
+			{
+				var isReadable:Boolean = (input.@access.toString().indexOf("read") >= 0);
+				var isWritable:Boolean = (input.@access.toString().indexOf("write") >= 0);
+				
+				return new Accessor(target, name, type, isReadable, isWritable, metadata);
+			}
 		}
 
-		private function parseConstant(input:XML):Constant
+		private function parseConstant(target:Object, input:XML):Constant
 		{
 			var name:String = input.@name;
 			var type:String = input.@type;
@@ -105,14 +183,14 @@ package se.stade.daffodil
 			
 			for each (var meta:XML in input.metadata)
 			{
-				var properties:Vector.<MetadataProperty> = new <MetadataProperty>[];
+				var parameters:Vector.<MetadataParameter> = new <MetadataParameter>[];
 				
-				for each (var property:XML in meta.arg)
+				for each (var parameter:XML in meta.arg)
 				{
-					properties.push(new MetadataProperty(property.@key, property.@value));
+					parameters.push(new MetadataParameter(parameter.@key, parameter.@value));
 				}
 				
-				metadata.push(new Metadata(meta.@name, properties));
+				metadata.push(new Metadata(meta.@name, parameters));
 			}
 			
 			return metadata;

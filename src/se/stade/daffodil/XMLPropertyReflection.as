@@ -4,6 +4,11 @@ package se.stade.daffodil
 	
 	internal final class XMLPropertyReflection extends XMLAbstractReflection implements PropertyReflection
 	{
+		public function XMLPropertyReflection(reflector:XMLReflector)
+		{
+			super(reflector);
+		}
+		
 		public function named(name:String):PropertyReflection
 		{
 			nameMatches = createNameMatcher(name);

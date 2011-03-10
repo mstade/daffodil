@@ -1,9 +1,12 @@
 package se.stade.daffodil.methods
 {
-	import se.stade.daffodil.TypeMember;
+	import flash.system.ApplicationDomain;
+	
+	import se.stade.daffodil.Reflect;
+	import se.stade.daffodil.Type;
 	import se.stade.daffodil.metadata.Metadata;
 
-	internal class AbstractMethod implements TypeMember
+	internal class AbstractMethod implements Type
 	{
 		public function AbstractMethod(name:String, type:String, parameters:Vector.<Parameter> = null, metadata:Vector.<Metadata> = null)
 		{
@@ -39,6 +42,11 @@ package se.stade.daffodil.methods
 		public function get metadata():Vector.<Metadata>
 		{
 			return _metadata;
+		}
+		
+		public function definition(domain:ApplicationDomain = null):Class
+		{
+			return Reflect.definition(type, domain)
 		}
 	}
 }

@@ -1,11 +1,18 @@
 package se.stade.daffodil
 {
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.getQualifiedSuperclassName;
 	
 	import se.stade.daffodil.methods.MethodReflection;
 
 	internal final class XMLMethodReflection extends XMLAbstractReflection implements MethodReflection
 	{
+		public function XMLMethodReflection(reflector:XMLReflector)
+		{
+			super(reflector);
+		}
+		
 		public function named(name:String):MethodReflection
 		{
 			nameMatches = createNameMatcher(name);
@@ -65,21 +72,28 @@ package se.stade.daffodil
 		
 		public function withSignature(type:Class, ... types):MethodReflection
 		{
-			types.unshift(type);
+			var specifiedSignature:Array = [type].concat(types);
 			
 			signatureMatches = function(input:XML):Boolean
 			{
-				var typeNames:XMLList = input.parameters.@type;
+				var reflectedSignature:XMLList = input.parameters.@type;
 				
-				if (typeNames.length() !== types.length)
+				if (reflectedSignature.length() != specifiedSignature.length)
 					return false;
 				
 				for (var i:int = 0; i < types.length; i++)
 				{
-					var qName:String = getQualifiedClassName(types[i]);
+					var reflectedTypeName:String = reflectedSignature[0].toString();
+					var specifiedTypeName:String = getQualifiedClassName(specifiedSignature[i]);
 					
-					if (typeNames[0].toString() != qName)
-						return false;
+					if (reflectedTypeName != specifiedTypeName)
+					{
+						var reflection:XML = reflector.getDescription(specifiedSignature[i]);
+						var baseTypes:XMLList = reflection.factory.extendsClass + reflection.factory.implementsInterface;
+						
+						if (baseTypes.(@type == specifiedType).length() == 0)
+							return false;
+					}
 				}
 				
 				return true;

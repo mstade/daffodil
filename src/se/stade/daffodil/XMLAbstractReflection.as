@@ -2,7 +2,7 @@ package se.stade.daffodil
 {
 	import flash.utils.getQualifiedClassName;
 
-	internal class XMLAbstractReflection
+	internal class XMLAbstractReflection implements Reflection
 	{
 		protected static function createNameMatcher(name:String):Function
 		{
@@ -40,12 +40,28 @@ package se.stade.daffodil
 			}
 		}
 		
-		public final function XMLAbstractReflection()
+		public function XMLAbstractReflection(reflector:XMLReflector)
 		{
-			nameMatches = signatureMatches = metadataMatches = returnTypeMatches = function(input:XML):Boolean
-			{
-				return true;
-			};
+			this.reflector = reflector;
+			
+			nameMatches
+			= signatureMatches
+			= metadataMatches
+			= returnTypeMatches
+			= alwaysMatches;
+		}
+		
+		protected function alwaysMatches(input:XML):Boolean
+		{
+			return true;
+		}
+		
+		protected var reflector:XMLReflector;
+		
+		public function on(target:Object, ... additionalTargets):Array
+		{
+			reflector.setTargets(target, additionalTargets);
+			return reflector.find(this);
 		}
 		
 		protected var nameMatches:Function;
@@ -53,13 +69,13 @@ package se.stade.daffodil
 		protected var signatureMatches:Function;
 		protected var returnTypeMatches:Function;
 		
-		public final function matches(input:*):Boolean
+		public function matches(input:*):Boolean
 		{
-			return input is XML &&
-				nameMatches(input) &&
-				metadataMatches(input) &&
-				signatureMatches(input) &&
-				returnTypeMatches(input);
+			return input is XML
+					&& nameMatches(input)
+					&& metadataMatches(input)
+					&& signatureMatches(input)
+					&& returnTypeMatches(input);
 		}
 	}
 }

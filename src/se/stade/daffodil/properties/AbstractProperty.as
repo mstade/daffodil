@@ -1,9 +1,12 @@
 package se.stade.daffodil.properties
 {
-	import se.stade.daffodil.TypeMember;
+	import flash.system.ApplicationDomain;
+	
+	import se.stade.daffodil.Reflect;
+	import se.stade.daffodil.Type;
 	import se.stade.daffodil.metadata.Metadata;
 	
-	internal class AbstractProperty implements TypeMember
+	internal class AbstractProperty implements Type
 	{
 		public function AbstractProperty(owner:Object, name:String, type:String, metadata:Vector.<Metadata>)
 		{
@@ -38,6 +41,11 @@ package se.stade.daffodil.properties
 		public function get metadata():Vector.<Metadata>
 		{
 			return _metadata;
+		}
+		
+		public function definition(domain:ApplicationDomain = null):Class
+		{
+			return Reflect.definition(type, domain)
 		}
 	}
 }

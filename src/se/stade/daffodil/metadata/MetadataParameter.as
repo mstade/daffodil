@@ -1,8 +1,8 @@
 package se.stade.daffodil.metadata
 {
-	public final class MetadataProperty
+	public final class MetadataParameter
 	{
-		public function MetadataProperty(name:String, value:String)
+		public function MetadataParameter(name:String, value:String)
 		{
 			_name = name;
 			_value = value;

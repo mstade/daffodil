@@ -2,10 +2,10 @@ package se.stade.daffodil.metadata
 {
 	public final class Metadata
 	{
-		public function Metadata(name:String, properties:Vector.<MetadataProperty> = null)
+		public function Metadata(name:String, parameters:Vector.<MetadataParameter> = null)
 		{
 			_name = name;
-			_properties = properties || new Vector.<MetadataProperty>;
+			_parameters = parameters || new Vector.<MetadataParameter>;
 		}
 		
 		private var _name:String;
@@ -14,10 +14,10 @@ package se.stade.daffodil.metadata
 			return _name;
 		}
 		
-		private var _properties:Vector.<MetadataProperty>;
-		public function get properties():Vector.<MetadataProperty>
+		private var _parameters:Vector.<MetadataParameter>;
+		public function get parameters():Vector.<MetadataParameter>
 		{
-			return _properties;
+			return _parameters;
 		}
 	}
 }

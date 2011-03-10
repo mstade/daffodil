@@ -21,6 +21,11 @@ package se.stade.daffodil.methods
 			else if (owner[name] is Function == false)
 				throw new IllegalOperationError("Member '" + name + "' on owner is not a Function");
 			
+			if (parameters.length == 1 && parameters[0] is Array)
+			{
+				parameters = parameters[0];
+			}
+			
 			var delegate:Function = owner[name] as Function;
 			return delegate.apply(owner, parameters);
 		}

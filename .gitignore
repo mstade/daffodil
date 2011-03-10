@@ -10,3 +10,5 @@ fussy.iml
 fussy.ipr
 fussy.iws
 target/
+.hg/
+.hgignore
