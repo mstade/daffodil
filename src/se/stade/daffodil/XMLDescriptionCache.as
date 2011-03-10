@@ -12,7 +12,10 @@ package se.stade.daffodil
 		public function retrieve(key:*):XML
 		{
 			if (key is Class == false)
-				key = getDefinitionByName(getQualifiedClassName(key));
+			{
+				var qualifiedType:String = getQualifiedClassName(key);
+				key = getDefinitionByName(qualifiedType);
+			}
 			
 			if (key in descriptions == false)
 			{

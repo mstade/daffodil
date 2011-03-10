@@ -44,13 +44,22 @@ package se.stade.daffodil.metadata
 
 					if (!parameter.name)
 					{
-						property = Reflect.properties.named(parameter.value).thatAreWritable.on(instance)[0];
+						property = Reflect.properties
+                                          .named(parameter.value)
+                                          .thatAreWritable
+                                          .on(instance)[0];
 						
-						if (property == false)
-							property = Reflect.properties.withMetadata("DefaultProperty").thatAreWritable.on(instance)[0];
+						if (!property)
+							property = Reflect.properties
+                                              .withMetadata("DefaultProperty")
+                                              .thatAreWritable
+                                              .on(instance)[0];
 					}
 					else
-						property = Reflect.properties.named(parameter.name).thatAreWritable.on(instance)[0];
+						property = Reflect.properties
+                                          .named(parameter.name)
+                                          .thatAreWritable
+                                          .on(instance)[0];
 
 					if (property)
 						property.value = parseValue(property.type, parameter.name, parameter.value);
