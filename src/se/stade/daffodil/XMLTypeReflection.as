@@ -32,13 +32,33 @@ package se.stade.daffodil
 		private var methodsMatches:Function;
 		private var constantsMatches:Function;
 		private var propertiesMatches:Function;
+        
+        public function like(name:String):TypeReflection
+        {
+            nameMatches = function(input:XML):Boolean
+            {
+                var allTypes:XMLList = input.@name
+                                       + input..extendsClass.@type
+                                       + input..implementsInterface.@type;
+                
+                for each (var fullName:String in allTypes)
+                {
+                    if (fullName.indexOf(name) >= 0)
+                        return true;
+                }
+                
+                return false;
+            };
+            
+            return this;
+        }
 		
 		public function named(name:String):TypeReflection
 		{
 			nameMatches = function(input:XML):Boolean
 			{
 				var typeName:String = input.@name;
-				typeName = typeName.substr(0, typeName.lastIndexOf(":") + 1);
+				typeName = typeName.substr(typeName.lastIndexOf(":") + 1);
 				
 				return name == typeName;
 			};

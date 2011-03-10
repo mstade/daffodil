@@ -7,6 +7,7 @@ package se.stade.daffodil.types
 
 	public interface TypeReflection extends Reflection
 	{
+        function like(name:String):TypeReflection;
 		function named(name:String):TypeReflection;
 		function inPackage(name:String):TypeReflection;
 		function withQualifiedName(name:String):TypeReflection;
