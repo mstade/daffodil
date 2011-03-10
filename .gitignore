@@ -4,6 +4,7 @@
 .FlexUnitSettings
 .project
 .DS_Store
+bin-debug/
 *bin/
 fussy.iml
 fussy.ipr

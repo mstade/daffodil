@@ -2,15 +2,46 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>uk.co.ziazoo</groupId>
-	<artifactId>fussy</artifactId>
-	<version>0.2</version>
+
+	<groupId>se.stade</groupId>
+	<artifactId>daffodil</artifactId>
+	<version>0.1</version>
 	<packaging>swc</packaging>
-	<name>Fussy query language</name>
+	
+	<name>Daffodil</name>
+	
 	<properties>
-		<flexversion>3.5.0.12683</flexversion>
-		<mojoversion>3.5.0</mojoversion>
+		<flexversion>4.1.0.16076</flexversion>
+		<mojoversion>3.8</mojoversion>
 	</properties>
+	
+	<dependencies>
+	
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>flex-framework</artifactId>
+			<version>${flexversion}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.sonatype.flexmojos</groupId>
+			<artifactId>flexmojos-unittest-support</artifactId>
+			<version>${mojoversion}</version>
+			<type>swc</type>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.adobe.flexunit</groupId>
+			<artifactId>flexunit</artifactId>
+			<version>4.0-rc-1</version>
+			<type>swc</type>
+			<scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
@@ -20,13 +51,7 @@
 				<artifactId>flexmojos-maven-plugin</artifactId>
 				<version>${mojoversion}</version>
 				<extensions>true</extensions>
-				<configuration>
-					<keepAs3Metadatas>
-					    <!-- can i just keep these for tests? -->
-						<keepAs3Metadata>Inject</keepAs3Metadata>
-						<keepAs3Metadata>Fussy</keepAs3Metadata>
-					</keepAs3Metadatas>
-				</configuration>
+				
 				<dependencies>
 					<dependency>
 						<groupId>com.adobe.flex</groupId>
@@ -38,26 +63,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>com.adobe.flex.framework</groupId>
-			<artifactId>flex-framework</artifactId>
-			<version>${flexversion}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.sonatype.flexmojos</groupId>
-			<artifactId>flexmojos-unittest-support</artifactId>
-			<version>${mojoversion}</version>
-			<type>swc</type>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.adobe.flexunit</groupId>
-			<artifactId>flexunit</artifactId>
-			<version>4.0-rc-1</version>
-			<type>swc</type>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 </project>
