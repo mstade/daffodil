@@ -57,11 +57,11 @@ package se.stade.daffodil
 		}
 		
 		protected var reflector:XMLReflector;
-		
-		public function on(target:Object, ... additionalTargets):Array
+        
+		public function on(target:Object, ... additionalTargets):*
 		{
 			reflector.setTargets(target, additionalTargets);
-			return reflector.find(this);
+			return reflector.targets.length == 1 ? reflector.findFirst(this) : reflector.find(this);
 		}
 		
 		protected var nameMatches:Function;

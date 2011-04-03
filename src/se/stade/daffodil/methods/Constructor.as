@@ -1,20 +1,19 @@
 package se.stade.daffodil.methods
 {
 	import flash.errors.IllegalOperationError;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
 	import se.stade.daffodil.metadata.Metadata;
 
 	public final class Constructor extends AbstractMethod implements Method
 	{
-		public function Constructor(type:Class, parameters:Vector.<Parameter> = null, metadata:Vector.<Metadata> = null)
+		public function Constructor(qualifiedName:String, parameters:Vector.<Parameter> = null, metadata:Vector.<Metadata> = null)
 		{
-			var qName:String = getQualifiedClassName(type);
-			var name:String = qName.substr(qName.lastIndexOf("::") + 1);
-			
-			super(name, qName, parameters, metadata);
-
-			Definition = type;
+			var name:String = qualifiedName.substr(qualifiedName.lastIndexOf(":") + 1);
+			super(name, qualifiedName, parameters, metadata);
+            
+			Definition = Class(getDefinitionByName(qualifiedName));
 		}
 		
 		private var Definition:Class;

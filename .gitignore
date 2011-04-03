@@ -6,9 +6,7 @@
 .DS_Store
 bin-debug/
 *bin/
-fussy.iml
-fussy.ipr
-fussy.iws
 target/
 .hg/
 .hgignore
+.redo

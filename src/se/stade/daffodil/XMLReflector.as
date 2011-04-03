@@ -13,7 +13,7 @@ package se.stade.daffodil
 	import se.stade.daffodil.properties.Constant;
 	import se.stade.daffodil.properties.ConstantReflection;
 	import se.stade.daffodil.properties.Property;
-	import se.stade.daffodil.properties.PropertyReflection;
+	import se.stade.daffodil.properties.NamedPropertyReflection;
 	import se.stade.daffodil.properties.Variable;
 	import se.stade.daffodil.types.QualifiedType;
 	import se.stade.daffodil.types.TypeReflection;
@@ -26,7 +26,7 @@ package se.stade.daffodil
 		}
 		
 		protected var cache:XMLDescriptionCache;
-		private var targets:Array;
+		internal var targets:Array;
 		
 		public function setTargets(target:Object, additionalTargets:Array):void
 		{
@@ -70,7 +70,7 @@ package se.stade.daffodil
 					parse = parseMethod;
 					elements = cache.retrieve(target)..method;
 				}
-				else if (reflection is PropertyReflection)
+				else if (reflection is NamedPropertyReflection)
 				{
 					parse = parseProperty;
 					
@@ -98,18 +98,14 @@ package se.stade.daffodil
 		
 		private function parseType(target:Object, type:XML):QualifiedType
 		{
-			var name:String = type.@name;
-			var definition:Class = getDefinitionByName(name) as Class;
-			
 			var metadata:Vector.<Metadata> = parseMetadata(type);
 			var parameters:Vector.<Parameter> = parseParameters(type..constructor.parameter);
-			
-			var constructor:Method = new Constructor(definition, parameters, metadata);
-					
-			var extendedTypes:Vector.<String> = parseTypeNames(type..extendsClass);
+			var constructor:Method = new Constructor(type.@name, parameters, metadata);
+
+            var extendedTypes:Vector.<String> = parseTypeNames(type..extendsClass);
 			var interfaces:Vector.<String> = parseTypeNames(type..implementsInterface);
 			
-			return new QualifiedType(name, constructor, extendedTypes, interfaces); 
+			return new QualifiedType(constructor, extendedTypes, interfaces); 
 		}
 		
 		private function parseTypeNames(types:XMLList):Vector.<String>

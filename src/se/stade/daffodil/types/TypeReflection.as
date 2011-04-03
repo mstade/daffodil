@@ -3,7 +3,7 @@ package se.stade.daffodil.types
 	import se.stade.daffodil.Reflection;
 	import se.stade.daffodil.methods.MethodReflection;
 	import se.stade.daffodil.properties.ConstantReflection;
-	import se.stade.daffodil.properties.PropertyReflection;
+	import se.stade.daffodil.properties.NamedPropertyReflection;
 
 	public interface TypeReflection extends Reflection
 	{
@@ -19,6 +19,6 @@ package se.stade.daffodil.types
 		
 		function withMethods(reflection:MethodReflection):TypeReflection;
 		function withConstants(reflection:ConstantReflection):TypeReflection;
-		function withProperties(reflection:PropertyReflection):TypeReflection;
+		function withProperties(reflection:NamedPropertyReflection):TypeReflection;
 	}
 }

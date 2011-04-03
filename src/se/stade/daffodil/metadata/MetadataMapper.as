@@ -29,8 +29,36 @@ package se.stade.daffodil.metadata
 
 			return this;
 		}
+        
+        public function get asDynamic():Object
+        {
+            var dynamic:Object = {};
+            
+            for each (var data:Metadata in metadata)
+            {
+                for each (var parameter:MetadataParameter in data.parameters)
+                {
+                    dynamic[parameter.name] = parseValue(parameter.name, parameter.value);
+                }
+            }
+            
+            return dynamic;
+        }
 
-		public function asType(definition:Class):Array
+        public function get asValue():String
+        {
+            for each (var data:Metadata in metadata)
+            {
+                for each (var parameter:MetadataParameter in data.parameters)
+                {
+                    return parseValue(parameter.name, parameter.value);
+                }
+            }
+            
+            return "";
+        }
+
+		public function asType(definition:Class):*
 		{
 			var instances:Array = [];
 
@@ -62,23 +90,29 @@ package se.stade.daffodil.metadata
                                           .on(instance)[0];
 
 					if (property)
-						property.value = parseValue(property.type, parameter.name, parameter.value);
+						property.value = parseValue(parameter.name, parameter.value, property.type);
 				}
 				
 				instances.push(instance);
 			}
 
-			return instances;
+			return instances.length > 1 ? instances : instances[0];
 		}
 		
 		public function asOne(definition:Class):*
 		{
 			return asType(definition)[0];
 		}
-
-
-		private function parseValue(type:String, name:String, value:String):*
+        
+		private function parseValue(name:String, value:String, type:String = "*"):*
 		{
+            const booleanValues:Object = {
+                "true": true,
+                "false": false,
+                "yes": true,
+                "no": false
+            };
+            
 			switch (type)
 			{
 				case "Number":
@@ -88,9 +122,7 @@ package se.stade.daffodil.metadata
 
 				case "Boolean":
 					value = value.toLowerCase();
-					return value == "true"
-						|| value == "yes"
-						|| (!name && value);
+					return booleanValues[value] || (value && !name);
 
 				case "Date":
 					return new Date(Date.parse(value));

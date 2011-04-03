@@ -4,7 +4,7 @@ package se.stade.daffodil
 	
 	import se.stade.daffodil.methods.MethodReflection;
 	import se.stade.daffodil.properties.ConstantReflection;
-	import se.stade.daffodil.properties.PropertyReflection;
+	import se.stade.daffodil.properties.NamedPropertyReflection;
 	import se.stade.daffodil.types.TypeReflection;
 	
 	internal final class XMLTypeReflection extends XMLAbstractReflection implements TypeReflection
@@ -127,7 +127,7 @@ package se.stade.daffodil
 			return this;
 		}
 
-		public function withProperties(reflection:PropertyReflection):TypeReflection
+		public function withProperties(reflection:NamedPropertyReflection):TypeReflection
 		{
 			propertiesMatches = reflection.matches;
 			return this;
