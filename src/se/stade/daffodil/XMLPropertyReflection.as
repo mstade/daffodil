@@ -22,7 +22,7 @@ package se.stade.daffodil
             return this;
         }
         
-        public function get thatAreReadable():PropertyReflection
+        public function get withWriteAccess():PropertyReflection
         {
             signatureMatches = function(input:XML):Boolean
             {
@@ -33,7 +33,7 @@ package se.stade.daffodil
             return this;
         }
         
-        public function get thatAreWritable():PropertyReflection
+        public function get withReadAccess():PropertyReflection
         {
             signatureMatches = function(input:XML):Boolean
             {

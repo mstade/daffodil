@@ -7,7 +7,7 @@ package se.stade.daffodil.metadata
         function get asValue():String;
         function get asDynamic():Object;
         
-		function asType(definition:Class):*;
+		function asType(definition:Class):Array;
 		function on(member:Type):MetadataReflection;
 	}
 }

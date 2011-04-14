@@ -58,7 +58,7 @@ package se.stade.daffodil.metadata
             return "";
         }
 
-		public function asType(definition:Class):*
+		public function asType(definition:Class):Array
 		{
 			var instances:Array = [];
 
@@ -72,22 +72,22 @@ package se.stade.daffodil.metadata
 
 					if (!parameter.name)
 					{
-						property = Reflect.properties
+						property = Reflect.first.property
                                           .named(parameter.value)
-                                          .thatAreWritable
-                                          .on(instance)[0];
+                                          .withWriteAccess
+                                          .on(instance);
 						
 						if (!property)
-							property = Reflect.properties
+							property = Reflect.first.property
                                               .withMetadata("DefaultProperty")
-                                              .thatAreWritable
-                                              .on(instance)[0];
+                                              .withWriteAccess
+                                              .on(instance);
 					}
 					else
-						property = Reflect.properties
+						property = Reflect.first.property
                                           .named(parameter.name)
-                                          .thatAreWritable
-                                          .on(instance)[0];
+                                          .withWriteAccess
+                                          .on(instance);
 
 					if (property)
 						property.value = parseValue(parameter.name, parameter.value, property.type);
@@ -96,7 +96,7 @@ package se.stade.daffodil.metadata
 				instances.push(instance);
 			}
 
-			return instances.length > 1 ? instances : instances[0];
+			return instances;
 		}
 		
 		public function asOne(definition:Class):*
@@ -128,8 +128,8 @@ package se.stade.daffodil.metadata
 					return new Date(Date.parse(value));
 
 				case "Class":
-					return getDefinitionByName(value);
-
+                    return Reflect.definition(value)
+                    
 				default:
 					return value;
 			}

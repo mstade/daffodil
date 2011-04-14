@@ -61,7 +61,7 @@ package se.stade.daffodil
 		public function on(target:Object, ... additionalTargets):*
 		{
 			reflector.setTargets(target, additionalTargets);
-			return reflector.targets.length == 1 ? reflector.findFirst(this) : reflector.find(this);
+			return reflector.find(this);
 		}
 		
 		protected var nameMatches:Function;

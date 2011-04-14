@@ -7,7 +7,7 @@ package se.stade.daffodil.properties
         function ofType(type:Class):PropertyReflection;
         function withMetadata(name:String):PropertyReflection;
         
-        function get thatAreReadable():PropertyReflection;
-        function get thatAreWritable():PropertyReflection;
+        function get withReadAccess():PropertyReflection;
+        function get withWriteAccess():PropertyReflection;
     }
 }

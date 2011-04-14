@@ -1,7 +1,5 @@
 package se.stade.daffodil
 {
-	import flash.utils.getDefinitionByName;
-	
 	import se.stade.daffodil.metadata.Metadata;
 	import se.stade.daffodil.metadata.MetadataParameter;
 	import se.stade.daffodil.methods.Constructor;
@@ -12,20 +10,23 @@ package se.stade.daffodil
 	import se.stade.daffodil.properties.Accessor;
 	import se.stade.daffodil.properties.Constant;
 	import se.stade.daffodil.properties.ConstantReflection;
-	import se.stade.daffodil.properties.Property;
 	import se.stade.daffodil.properties.NamedPropertyReflection;
+	import se.stade.daffodil.properties.Property;
 	import se.stade.daffodil.properties.Variable;
 	import se.stade.daffodil.types.QualifiedType;
 	import se.stade.daffodil.types.TypeReflection;
 	
-	internal final class XMLReflector implements TypeInspector
+	internal final class XMLReflector
 	{
-		public function XMLReflector(cache:XMLDescriptionCache)
+		public function XMLReflector(cache:XMLDescriptionCache, limit:uint = uint.MAX_VALUE)
 		{
 			this.cache = cache;
+            this.limit = limit;
 		}
-		
-		protected var cache:XMLDescriptionCache;
+        
+        private var limit:uint;
+		private var cache:XMLDescriptionCache;
+        
 		internal var targets:Array;
 		
 		public function setTargets(target:Object, additionalTargets:Array):void
@@ -40,22 +41,12 @@ package se.stade.daffodil
 		{
 			return cache.retrieve(target);
 		}
-		
-		public function find(reflection:Reflection):Array
-		{
-			return findWithLimit(reflection, uint.MAX_VALUE);
-		}
-		
-		public function findFirst(reflection:Reflection):Type
-		{
-			return findWithLimit(reflection, 1)[0];
-		}
-		
-		private function findWithLimit(reflection:Reflection, limit:uint):Array
+        
+		public function find(reflection:Reflection):*
 		{
 			var members:Array = [];
 			
-			for each (var target:Object in targets)
+			reflection: for each (var target:Object in targets)
 			{
 				var parse:Function;
 				var elements:XMLList;
@@ -86,14 +77,16 @@ package se.stade.daffodil
 				for each (var input:XML in elements)
 				{
 					if (reflection.matches(input))
+                    {
 						members.push(parse(target, input));
-					
-					if (members.length == limit)
-						return members;
+                        
+                        if (members.length == limit)
+                            break reflection;
+                    }
 				}
 			}
 			
-			return members;
+			return limit == 1 ? members[0] : members;
 		}
 		
 		private function parseType(target:Object, type:XML):QualifiedType

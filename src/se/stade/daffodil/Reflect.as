@@ -11,18 +11,10 @@ package se.stade.daffodil
 	import se.stade.daffodil.properties.PropertyReflection;
 	import se.stade.daffodil.types.TypeReflection;
 
-	public class Reflect
+	public final class Reflect
 	{
 		private static var cache:XMLDescriptionCache = new XMLDescriptionCache();
 		private static var metadataDefinitions:Dictionary = new Dictionary(true);
-		
-		public static function on(target:Object, ... additionalTargets):TypeInspector
-		{
-			var reflector:XMLReflector = new XMLReflector(cache);
-			reflector.setTargets(target, additionalTargets);
-			
-			return reflector;
-		}
 		
 		public static function metadata(name:String):MetadataReflection
 		{
@@ -43,25 +35,15 @@ package se.stade.daffodil
 			
 			return null;
 		}
-		
-		public static function get types():TypeReflection
-		{
-			return new XMLTypeReflection(new XMLReflector(cache));
-		}
-		
-		public static function get methods():MethodReflection
-		{
-			return new XMLMethodReflection(new XMLReflector(cache));
-		}
-		
-		public static function get properties():NamedPropertyReflection
-		{
-			return new XMLNamedPropertyReflection(new XMLReflector(cache));
-		}
-		
-		public static function get constants():ConstantReflection
-		{
-			return new XMLConstantReflection(new XMLReflector(cache));
-		}
+        
+        public static function get first():SingleReflection
+        {
+            return new SingleReflection(cache);
+        }
+        
+        public static function get all():MultipleReflections
+        {
+            return new MultipleReflections(cache);
+        }
 	}
 }
