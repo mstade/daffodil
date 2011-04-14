@@ -1,9 +1,6 @@
 package se.stade.daffodil.metadata
 {
-	import flash.utils.getDefinitionByName;
-	
 	import se.stade.daffodil.Reflect;
-	import se.stade.daffodil.Reflection;
 	import se.stade.daffodil.Type;
 	import se.stade.daffodil.properties.Property;
 
@@ -20,12 +17,15 @@ package se.stade.daffodil.metadata
 		public function on(member:Type):MetadataReflection
 		{
 			metadata = new <Metadata>[];
-
-			for each (var data:Metadata in member.metadata)
-			{
-				if (data.name == name)
-					metadata.push(data);
-			}
+            
+            if (member)
+            {
+    			for each (var data:Metadata in member.metadata)
+    			{
+    				if (data.name == name)
+    					metadata.push(data);
+    			}
+            }
 
 			return this;
 		}
@@ -84,10 +84,12 @@ package se.stade.daffodil.metadata
                                               .on(instance);
 					}
 					else
+                    {
 						property = Reflect.first.property
                                           .named(parameter.name)
                                           .withWriteAccess
                                           .on(instance);
+                    }
 
 					if (property)
 						property.value = parseValue(parameter.name, parameter.value, property.type);
