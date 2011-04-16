@@ -7,7 +7,7 @@ package se.stade.daffodil.types
 	import se.stade.daffodil.metadata.Metadata;
 	import se.stade.daffodil.methods.Method;
 	
-	public class QualifiedType implements Type
+	public final class QualifiedType implements Type
 	{
 		public function QualifiedType(constructor:Method, extendedTypes:Vector.<String>, interfaces:Vector.<String>)
 		{

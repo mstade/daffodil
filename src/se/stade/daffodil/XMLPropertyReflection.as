@@ -10,19 +10,19 @@ package se.stade.daffodil
             super(reflector);
         }
         
-        public function ofType(type:Class):PropertyReflection
+        public final function ofType(type:Class):PropertyReflection
         {
             returnTypeMatches = createReturnTypeMatcher(type, false);
             return this;
         }
         
-        public function withMetadata(name:String):PropertyReflection
+        public final function withMetadata(name:String):PropertyReflection
         {
             metadataMatches = createMetadataMatcher(name);
             return this;
         }
         
-        public function get withWriteAccess():PropertyReflection
+        public final function get withWriteAccess():PropertyReflection
         {
             signatureMatches = function(input:XML):Boolean
             {
@@ -33,7 +33,7 @@ package se.stade.daffodil
             return this;
         }
         
-        public function get withReadAccess():PropertyReflection
+        public final function get withReadAccess():PropertyReflection
         {
             signatureMatches = function(input:XML):Boolean
             {
