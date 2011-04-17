@@ -5,7 +5,7 @@ package se.stade.daffodil.metadata
 	public interface MetadataReflection
 	{
         function get asValue():String;
-        function get asDynamic():Object;
+        function get asObject():Object;
         
 		function asType(definition:Class):Array;
 		function on(member:Type):MetadataReflection;

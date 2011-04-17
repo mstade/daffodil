@@ -30,19 +30,19 @@ package se.stade.daffodil.metadata
 			return this;
 		}
         
-        public function get asDynamic():Object
+        public function get asObject():Object
         {
-            var dynamic:Object = {};
+            var object:Object = {};
             
             for each (var data:Metadata in metadata)
             {
                 for each (var parameter:MetadataParameter in data.parameters)
                 {
-                    dynamic[parameter.name] = parseValue(parameter.name, parameter.value);
+                    object[parameter.name] = parameter.value;
                 }
             }
             
-            return dynamic;
+            return object;
         }
 
         public function get asValue():String
@@ -51,7 +51,7 @@ package se.stade.daffodil.metadata
             {
                 for each (var parameter:MetadataParameter in data.parameters)
                 {
-                    return parseValue(parameter.name, parameter.value);
+                    return parameter.value;
                 }
             }
             
@@ -68,31 +68,18 @@ package se.stade.daffodil.metadata
 
 				for each (var parameter:MetadataParameter in data.parameters)
 				{
-					var property:Property;
-
-					if (!parameter.name)
-					{
-						property = Reflect.first.property
-                                          .named(parameter.value)
-                                          .withWriteAccess
-                                          .on(instance);
-						
-						if (!property)
-							property = Reflect.first.property
-                                              .withMetadata("DefaultProperty")
-                                              .withWriteAccess
-                                              .on(instance);
-					}
-					else
-                    {
-						property = Reflect.first.property
-                                          .named(parameter.name)
-                                          .withWriteAccess
-                                          .on(instance);
-                    }
+					var property:Property = Reflect.first.property
+                                                   .named(parameter.name || parameter.value)
+                                                   .withWriteAccess
+                                                   .on(instance)
+                                            ||
+                                            Reflect.first.property
+                                                   .withMetadata("DefaultProperty")
+                                                   .withWriteAccess
+                                                   .on(instance);
 
 					if (property)
-						property.value = parseValue(parameter.name, parameter.value, property.type);
+						property.value = parameter.valueAs(property.type);
 				}
 				
 				instances.push(instance);
@@ -104,37 +91,6 @@ package se.stade.daffodil.metadata
 		public function asOne(definition:Class):*
 		{
 			return asType(definition)[0];
-		}
-        
-		private function parseValue(name:String, value:String, type:String = "*"):*
-		{
-            const booleanValues:Object = {
-                "true": true,
-                "false": false,
-                "yes": true,
-                "no": false
-            };
-            
-			switch (type)
-			{
-				case "Number":
-				case "int":
-				case "uint":
-					return parseFloat(value);
-
-				case "Boolean":
-					value = value.toLowerCase();
-					return booleanValues[value] || (value && !name);
-
-				case "Date":
-					return new Date(Date.parse(value));
-
-				case "Class":
-                    return Reflect.definition(value)
-                    
-				default:
-					return value;
-			}
 		}
 	}
 }
