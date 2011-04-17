@@ -9,7 +9,5 @@ package se.stade.daffodil
 		function get name():String;
 
 		function get metadata():Vector.<Metadata>;
-		
-		function definition(domain:ApplicationDomain = null):Class;
 	}
 }

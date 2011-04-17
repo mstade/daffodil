@@ -43,10 +43,5 @@ package se.stade.daffodil.methods
 		{
 			return _metadata;
 		}
-		
-		public function definition(domain:ApplicationDomain = null):Class
-		{
-			return Reflect.definition(type, domain)
-		}
 	}
 }
