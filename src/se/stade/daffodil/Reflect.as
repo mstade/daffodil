@@ -15,11 +15,6 @@ package se.stade.daffodil
 	{
 		private static var cache:XMLDescriptionCache = new XMLDescriptionCache();
 		private static var metadataDefinitions:Dictionary = new Dictionary(true);
-		
-		public static function metadata(name:String):MetadataReflection
-		{
-			return new MetadataMapper(name);
-		}
         
         public static function get defaultProperty():PropertyReflection
         {

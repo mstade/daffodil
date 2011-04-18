@@ -1,5 +1,7 @@
 package se.stade.daffodil
 {
+    import se.stade.daffodil.metadata.MetadataMapper;
+    import se.stade.daffodil.metadata.MetadataReflection;
     import se.stade.daffodil.methods.MethodReflection;
     import se.stade.daffodil.properties.ConstantReflection;
     import se.stade.daffodil.properties.NamedPropertyReflection;
@@ -13,6 +15,11 @@ package se.stade.daffodil
         }
         
         private var cache:XMLDescriptionCache;
+        
+        public function metadata(name:String):MetadataReflection
+        {
+            return new MetadataMapper(name);
+        }
         
         public function get types():TypeReflection
         {

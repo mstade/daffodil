@@ -10,7 +10,7 @@ package se.stade.daffodil
         public override function on(target:Object, ... additionalTargets):*
         {
             var targetType:Type = Reflect.first.type.on(target);
-            var name:String = Reflect.metadata("DefaultProperty").on(targetType).asValue;
+            var name:String = Reflect.first.metadata("DefaultProperty").on(targetType).into(String);
             
             nameMatches = createNameMatcher(name);
             
