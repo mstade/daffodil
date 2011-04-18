@@ -2,7 +2,7 @@ package se.stade.daffodil
 {
     import flash.utils.getQualifiedClassName;
 
-    public function qualify(type:Class):String
+    public function qualify(type:*):String
     {
         try
         {
