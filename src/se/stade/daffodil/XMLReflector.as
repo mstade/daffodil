@@ -34,7 +34,7 @@ package se.stade.daffodil
 			if (target is Array)
 				targets = target.concat(additionalTargets);
 			else
-				targets = [target].concat(additionalTargets);
+				targets = target ? [target].concat(additionalTargets) : additionalTargets;
 		}
 		
 		public function getDescription(target:Object):XML
