@@ -9,20 +9,13 @@ package se.stade.daffodil.types
 	
 	public final class QualifiedType implements Type
 	{
-		public function QualifiedType(instance:*, constructor:Method, extendedTypes:Vector.<String>, interfaces:Vector.<String>)
+		public function QualifiedType(constructor:Method, extendedTypes:Vector.<String>, interfaces:Vector.<String>)
 		{
-            _instance = instance;
 			_constructor = constructor;
 			_packageName = qualifiedName.substr(0, Math.max(0, qualifiedName.indexOf(":")));
 			_extendedTypes = extendedTypes || new Vector.<String>;
 			_implementedInterfaces = implementedInterfaces || new Vector.<String>;
 		}
-        
-        private var _instance:*;
-        public function get instance():*
-        {
-            return _instance;
-        }
 		
 		public function get name():String
 		{

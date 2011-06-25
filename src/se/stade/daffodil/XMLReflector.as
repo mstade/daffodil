@@ -98,7 +98,7 @@ package se.stade.daffodil
             var extendedTypes:Vector.<String> = parseTypeNames(type..extendsClass);
 			var interfaces:Vector.<String> = parseTypeNames(type..implementsInterface);
 			
-			return new QualifiedType(target, constructor, extendedTypes, interfaces); 
+			return new QualifiedType(constructor, extendedTypes, interfaces); 
 		}
 		
 		private function parseTypeNames(types:XMLList):Vector.<String>
