@@ -1,8 +1,5 @@
 package se.stade.daffodil.methods
 {
-	import flash.system.ApplicationDomain;
-	
-	import se.stade.daffodil.Reflect;
 	import se.stade.daffodil.Type;
 	import se.stade.daffodil.metadata.Metadata;
 
@@ -15,6 +12,15 @@ package se.stade.daffodil.methods
 			
 			_parameters = parameters || new Vector.<Parameter>;
 			_parameters.fixed = true;
+            
+            _minRequiredParameters = 0;
+            for each (var parameter:Parameter in parameters)
+            {
+                if (parameter.isOptional)
+                    continue;
+                else
+                    _minRequiredParameters++;
+            }
 			
 			_metadata = metadata || new Vector.<Metadata>;
 			_metadata.fixed = true;
@@ -37,6 +43,12 @@ package se.stade.daffodil.methods
 		{
 			return _parameters;
 		}
+        
+        private var _minRequiredParameters:uint;
+        public function get minRequiredParameters():uint
+        {
+            return _minRequiredParameters;
+        }
 		
 		private var _metadata:Vector.<Metadata>;
 		public function get metadata():Vector.<Metadata>

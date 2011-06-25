@@ -9,25 +9,26 @@ package se.stade.daffodil.methods
 		public function Delegate(owner:Object, name:String, parameters:Vector.<Parameter>, type:String, metadata:Vector.<Metadata>)
 		{
 			super(name, type, parameters, metadata);
-			this.owner = owner;
+			_owner = owner;
 		}
 		
-		private var owner:Object;
+		private var _owner:*;
+        public function get owner():*
+        {
+            return _owner;
+        }
 		
-		public function invoke(... parameters):*
+		public function invoke(arguments:Array):*
 		{
 			if (name in owner == false)
 				throw new IllegalOperationError("Method not found on owner");
 			else if (owner[name] is Function == false)
 				throw new IllegalOperationError("Member '" + name + "' on owner is not a Function");
-			
-			if (parameters.length == 1 && parameters[0] is Array)
-			{
-				parameters = parameters[0];
-			}
-			
+            else if (arguments.length < minRequiredParameters)
+                throw new IllegalOperationError("Method requires at least" + minRequiredParameters + " arguments, got " + arguments.length);
+            
 			var delegate:Function = owner[name] as Function;
-			return delegate.apply(owner, parameters);
+			return delegate.apply(owner, arguments);
 		}
 		
 		public function toString():String

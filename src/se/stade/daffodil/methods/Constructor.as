@@ -17,12 +17,14 @@ package se.stade.daffodil.methods
 		}
 		
 		private var Definition:Class;
-		
-		public function invoke(... parameters):*
+        
+        public function get owner():*
+        {
+            return Definition;
+        }
+        
+		public function invoke(arguments:Array):*
 		{
-            if (parameters.length == 1 && parameters[0] is Array)
-                parameters = parameters[0];
-            
 			// TODO: Figure out a way to dynamically call a constructor with a variable parameterlist. This is fugly!
 			if (parameters.length == 0)
 				return new Definition();

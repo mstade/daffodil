@@ -5,7 +5,9 @@ package se.stade.daffodil.methods
 	public interface Method extends TypeMember
 	{
 		function get parameters():Vector.<Parameter>;
+        
+        function get minRequiredParameters():uint;
 		
-		function invoke(... parameters):*;
+		function invoke(arguments:Array):*;
 	}
 }

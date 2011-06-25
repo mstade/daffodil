@@ -10,7 +10,7 @@ package se.stade.daffodil.properties
 	{
 		public function AbstractProperty(owner:Object, name:String, type:String, metadata:Vector.<Metadata>)
 		{
-			this.owner = owner;
+			_owner = owner;
 			
 			_name = name;
 			_type = type;
@@ -18,7 +18,11 @@ package se.stade.daffodil.properties
 			_metadata = metadata || new Vector.<Metadata>;
 		}
 		
-		protected var owner:Object;
+		private var _owner:*;
+        public function get owner():*
+        {
+            return _owner;
+        }
 		
 		private var _name:String;
 		public function get name():String
