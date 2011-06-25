@@ -43,7 +43,7 @@ package se.stade.daffodil
                 
                 for each (var fullName:String in allTypes)
                 {
-                    if (fullName.indexOf(name) >= 0)
+                    if (fullName.substr(-name.length) == name)
                         return true;
                 }
                 
