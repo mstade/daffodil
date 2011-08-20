@@ -1,10 +1,8 @@
 package se.stade.daffodil
 {
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
-	import flash.utils.getQualifiedSuperclassName;
-	
 	import se.stade.daffodil.methods.MethodReflection;
+
+	import flash.utils.getQualifiedClassName;
 
 	internal final class XMLMethodReflection extends XMLAbstractReflection implements MethodReflection
 	{

@@ -74,7 +74,7 @@ package se.stade.daffodil
 				var packageName:String = qualifiedName.substr(0, Math.max(0, qualifiedName.indexOf(":")));
 				
 				return name == packageName;
-			}
+			};
 				
 			return this;
 		}

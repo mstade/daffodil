@@ -1,10 +1,9 @@
 package se.stade.daffodil.methods
 {
+	import se.stade.daffodil.metadata.Metadata;
+
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
-	
-	import se.stade.daffodil.metadata.Metadata;
 
 	public final class Constructor extends AbstractMethod implements Method
 	{

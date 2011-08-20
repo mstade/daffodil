@@ -1,7 +1,6 @@
 package se.stade.daffodil
 {
-    import se.stade.daffodil.properties.NamedPropertyReflection;
-    import se.stade.daffodil.properties.PropertyReflection;
+	import se.stade.daffodil.properties.PropertyReflection;
     
     internal class XMLPropertyReflection extends XMLAbstractReflection implements PropertyReflection
     {

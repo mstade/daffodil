@@ -1,8 +1,5 @@
 package se.stade.daffodil.properties
 {
-	import flash.system.ApplicationDomain;
-	
-	import se.stade.daffodil.Reflect;
 	import se.stade.daffodil.Type;
 	import se.stade.daffodil.metadata.Metadata;
 	

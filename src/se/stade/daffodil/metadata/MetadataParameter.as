@@ -46,7 +46,7 @@ package se.stade.daffodil.metadata
                     return new Date(Date.parse(value));
                     
                 case "Class":
-                    return Reflect.definition(value)
+                    return Reflect.definition(value);
                     
                 default:
                     return value;

@@ -9,7 +9,7 @@ package se.stade.daffodil
 			return function(input:XML):Boolean
 			{
 				return input.@name == name;
-			}
+			};
 		}
 		
 		protected static function createMetadataMatcher(name:String):Function
@@ -23,7 +23,7 @@ package se.stade.daffodil
 				}
 				
 				return false;
-			}
+			};
 		}
 		
 		protected static function createReturnTypeMatcher(type:Class, isMethod:Boolean):Function
@@ -33,11 +33,12 @@ package se.stade.daffodil
 			if (isMethod) return function(input:XML):Boolean
 			{
 				return input.@returnType == qName;
-			}
+			};
+			
 			else return function(input:XML):Boolean
 			{
 				return input.@type == qName;
-			}
+			};
 		}
 		
 		public function XMLAbstractReflection(reflector:XMLReflector)

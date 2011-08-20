@@ -1,20 +1,12 @@
 package se.stade.daffodil
 {
-	import flash.system.ApplicationDomain;
-	import flash.utils.Dictionary;
-	
-	import se.stade.daffodil.metadata.MetadataMapper;
-	import se.stade.daffodil.metadata.MetadataReflection;
-	import se.stade.daffodil.methods.MethodReflection;
-	import se.stade.daffodil.properties.ConstantReflection;
-	import se.stade.daffodil.properties.NamedPropertyReflection;
 	import se.stade.daffodil.properties.PropertyReflection;
-	import se.stade.daffodil.types.TypeReflection;
+
+	import flash.system.ApplicationDomain;
 
 	public final class Reflect
 	{
 		private static var cache:XMLDescriptionCache = new XMLDescriptionCache();
-		private static var metadataDefinitions:Dictionary = new Dictionary(true);
         
         public static function get defaultProperty():PropertyReflection
         {

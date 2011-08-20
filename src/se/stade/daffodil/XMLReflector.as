@@ -44,7 +44,7 @@ package se.stade.daffodil
         
 		public function find(reflection:Reflection):*
 		{
-			var members:Array = [];
+			var result:Array = [];
 			
 			reflection: for each (var target:Object in targets)
 			{
@@ -78,18 +78,18 @@ package se.stade.daffodil
 				{
 					if (reflection.matches(input))
                     {
-						members.push(parse(target, input));
+                        result.push(parse(input, target));
                         
-                        if (members.length == limit)
+                        if (result.length == limit)
                             break reflection;
                     }
 				}
 			}
 			
-			return limit == 1 ? members[0] : members;
+			return limit == 1 ? result[0] : result;
 		}
 		
-		private function parseType(target:Object, type:XML):QualifiedType
+		private function parseType(type:XML, target:Object):QualifiedType
 		{
 			var metadata:Vector.<Metadata> = parseMetadata(type);
 			var parameters:Vector.<Parameter> = parseParameters(type..constructor.parameter);
@@ -113,7 +113,7 @@ package se.stade.daffodil
 			return typeNames;
 		}
 		
-		private function parseMethod(target:Object, method:XML):Method
+		private function parseMethod(method:XML, target:Object):Method
 		{
 			var name:String = method.@name;
 			var metadata:Vector.<Metadata> = parseMetadata(method);
@@ -138,7 +138,7 @@ package se.stade.daffodil
 			return parameterList;
 		}
 		
-		private function parseProperty(target:Object, input:XML):Property
+		private function parseProperty(input:XML, target:Object):Property
 		{
 			var name:String = input.@name;
 			var type:String = input.@type;
@@ -156,7 +156,7 @@ package se.stade.daffodil
 			}
 		}
 
-		private function parseConstant(target:Object, input:XML):Constant
+		private function parseConstant(input:XML, target:Object):Constant
 		{
 			var name:String = input.@name;
 			var type:String = input.@type;

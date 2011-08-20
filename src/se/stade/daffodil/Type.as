@@ -1,7 +1,5 @@
 package se.stade.daffodil
 {
-	import flash.system.ApplicationDomain;
-	
 	import se.stade.daffodil.metadata.Metadata;
 
 	public interface Type

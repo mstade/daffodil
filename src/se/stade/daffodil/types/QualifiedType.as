@@ -9,7 +9,7 @@ package se.stade.daffodil.types
 	
 	public final class QualifiedType implements Type
 	{
-		public function QualifiedType(constructor:Method, extendedTypes:Vector.<String>, interfaces:Vector.<String>)
+		public function QualifiedType(constructor:Method, extendedTypes:Vector.<String>, implementedInterfaces:Vector.<String>)
 		{
 			_constructor = constructor;
 			_packageName = qualifiedName.substr(0, Math.max(0, qualifiedName.indexOf(":")));
@@ -63,7 +63,7 @@ package se.stade.daffodil.types
 		
 		public function definition(domain:ApplicationDomain = null):Class
 		{
-			return Reflect.definition(qualifiedName, domain)
+			return Reflect.definition(qualifiedName, domain);
 		}
 	}
 }
