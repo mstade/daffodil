@@ -57,10 +57,21 @@ package se.stade.daffodil
 		{
 			nameMatches = function(input:XML):Boolean
 			{
-				var typeName:String = input.@name;
-				typeName = typeName.substr(typeName.lastIndexOf(":") + 1);
+                var allTypes:XMLList = input.@name
+                                       + input..extendsClass.@type
+                                       + input..implementsInterface.@type;
+                
+                for each (var fullName:String in allTypes)
+                {
+    				var typeName:String = fullName.substr(fullName.lastIndexOf(":") + 1);
+                    
+                    if (name == typeName)
+                    {
+                        return true;
+                    }
+                }
 				
-				return name == typeName;
+				return false;
 			};
 				
 			return this;
@@ -70,10 +81,21 @@ package se.stade.daffodil
 		{
 			packageMatches = function(input:XML):Boolean
 			{
-				var qualifiedName:String = input.@name;
-				var packageName:String = qualifiedName.substr(0, Math.max(0, qualifiedName.indexOf(":")));
-				
-				return name == packageName;
+                var allTypes:XMLList = input.@name
+                                       + input..extendsClass.@type
+                                       + input..implementsInterface.@type;
+                
+                for each (var fullName:String in allTypes)
+                {
+    				var packageName:String = fullName.substr(0, Math.max(0, fullName.indexOf(":")));
+                    
+                    if (name == packageName)
+                    {
+                        return true;
+                    }
+                }
+                
+                return false;
 			};
 				
 			return this;
@@ -91,7 +113,7 @@ package se.stade.daffodil
 			return this;
 		}
 		
-		public function extending(type:Class):TypeReflection
+		public function extendings(type:Class):TypeReflection
 		{
 			var qualifiedName:String = getQualifiedClassName(type);
 			
