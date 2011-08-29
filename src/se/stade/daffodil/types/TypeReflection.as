@@ -14,8 +14,8 @@ package se.stade.daffodil.types
 		
 		function withMetadata(name:String):TypeReflection;
 		
-		function extending(type:Class):TypeReflection;
-		function implementing(type:Class):TypeReflection;
+		function extending(type:*):TypeReflection;
+		function implementing(type:*):TypeReflection;
 		
 		function withMethods(reflection:MethodReflection):TypeReflection;
 		function withConstants(reflection:ConstantReflection):TypeReflection;

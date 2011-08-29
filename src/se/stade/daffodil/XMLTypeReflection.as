@@ -113,9 +113,9 @@ package se.stade.daffodil
 			return this;
 		}
 		
-		public function extending(type:Class):TypeReflection
+		public function extending(type:*):TypeReflection
 		{
-			var qualifiedName:String = getQualifiedClassName(type);
+			var qualifiedName:String = type is String ? type : getQualifiedClassName(type);
 			
 			baseMatches = function(input:XML):Boolean
 			{
@@ -125,9 +125,9 @@ package se.stade.daffodil
 			return this;
 		}
 		
-		public function implementing(type:Class):TypeReflection
+		public function implementing(type:*):TypeReflection
 		{
-			var qualifiedName:String = getQualifiedClassName(type);
+			var qualifiedName:String = type is String ? type : getQualifiedClassName(type);
 			
 			baseMatches = function(input:XML):Boolean
 			{
