@@ -113,7 +113,7 @@ package se.stade.daffodil
 			return this;
 		}
 		
-		public function extendings(type:Class):TypeReflection
+		public function extending(type:Class):TypeReflection
 		{
 			var qualifiedName:String = getQualifiedClassName(type);
 			
