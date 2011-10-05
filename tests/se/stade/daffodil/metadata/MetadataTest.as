@@ -5,7 +5,7 @@ package se.stade.daffodil.metadata
     import org.hamcrest.object.notNullValue;
     
     public class MetadataTest
-    {		
+    {       
         [Test]
         public function shouldCreateMetadataWithEmptyParameterList():void
         {

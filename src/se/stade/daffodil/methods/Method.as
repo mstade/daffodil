@@ -1,13 +1,13 @@
 package se.stade.daffodil.methods
 {
-	import se.stade.daffodil.TypeMember;
+    import se.stade.daffodil.TypeMember;
 
-	public interface Method extends TypeMember
-	{
-		function get parameters():Vector.<Parameter>;
+    public interface Method extends TypeMember
+    {
+        function get parameters():Vector.<Parameter>;
         
         function get minRequiredParameters():uint;
-		
-		function invoke(arguments:Array):*;
-	}
+        
+        function invoke(arguments:Array):*;
+    }
 }

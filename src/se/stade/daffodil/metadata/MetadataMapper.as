@@ -1,36 +1,36 @@
 package se.stade.daffodil.metadata
 {
-	import se.stade.daffodil.Reflect;
-	import se.stade.daffodil.Type;
-	import se.stade.daffodil.properties.Property;
+    import se.stade.daffodil.Reflect;
+    import se.stade.daffodil.Type;
+    import se.stade.daffodil.properties.Property;
 
-	public final class MetadataMapper implements MetadataReflection
-	{
-		public function MetadataMapper(name:String, limit:uint = uint.MAX_VALUE)
-		{
-			this.name = name;
+    public final class MetadataMapper implements MetadataReflection
+    {
+        public function MetadataMapper(name:String, limit:uint = uint.MAX_VALUE)
+        {
+            this.name = name;
             this.limit = limit;
-		}
+        }
 
-		private var name:String;
+        private var name:String;
         private var limit:uint;
-		private var metadata:Vector.<Metadata>;
+        private var metadata:Vector.<Metadata>;
 
-		public function on(member:Type):MetadataReflection
-		{
-			metadata = new <Metadata>[];
+        public function on(member:Type):MetadataReflection
+        {
+            metadata = new <Metadata>[];
             
             if (member)
             {
-    			for each (var data:Metadata in member.metadata)
-    			{
-    				if (data.name == name && metadata.length < limit)
-    					metadata.push(data);
-    			}
+                for each (var data:Metadata in member.metadata)
+                {
+                    if (data.name == name && metadata.length < limit)
+                        metadata.push(data);
+                }
             }
 
-			return this;
-		}
+            return this;
+        }
         
         private function createDynamicMaps():Array
         {
@@ -96,8 +96,8 @@ package se.stade.daffodil.metadata
             return values;
         }
 
-		public function into(Definition:Class):*
-		{
+        public function into(Definition:Class):*
+        {
             var instances:Array;
             
             switch (Definition)
@@ -116,6 +116,6 @@ package se.stade.daffodil.metadata
             }
             
             return limit == 1 ? instances[0] : instances;
-		}
-	}
+        }
+    }
 }
